@@ -9,7 +9,14 @@
 
 #include <stdio.h>
 #include <tchar.h>
+#include <string>
+#include <stdlib.h>
 
+#include <GL\glew.h>
+
+#include <GLFW\glfw3.h>
+
+#include <glm\glm.hpp>
 
 
 // TODO: mencionar aquí los encabezados adicionales que el programa necesita

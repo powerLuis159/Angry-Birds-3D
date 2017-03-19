@@ -139,17 +139,40 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ave.h" />
+    <ClInclude Include="Base.h" />
+    <ClInclude Include="Cerdo.h" />
+    <ClInclude Include="C_normal.h" />
+    <ClInclude Include="Esfera.h" />
+    <ClInclude Include="Iniciador.h" />
+    <ClInclude Include="Madera.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Rojo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Tetra.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angre Birds v1.cpp" />
+    <ClCompile Include="Ave.cpp" />
+    <ClCompile Include="Base.cpp" />
+    <ClCompile Include="Cerdo.cpp" />
+    <ClCompile Include="C_normal.cpp" />
+    <ClCompile Include="Esfera.cpp" />
+    <ClCompile Include="Iniciador.cpp" />
+    <ClCompile Include="Madera.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Rojo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Tetra.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
