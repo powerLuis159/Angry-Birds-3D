@@ -10,7 +10,7 @@
   <Class Name="Base" Collapsed="true">
     <Position X="2.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAQAAAAABAAAAACAAAAQAAAAAAIAAAAEgAAAAAQgA=</HashCode>
+      <HashCode>AAAAQQAAAABAAAAACAAAAQAAAAAAIAAAAEQAAAAAQgA=</HashCode>
       <FileName>Base.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -31,7 +31,7 @@
   <Class Name="Esfera" Collapsed="true">
     <Position X="1.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAgAAAAAAACAAAAAAAAAAAAA=</HashCode>
       <FileName>Esfera.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -59,8 +59,22 @@
   <Class Name="Tetra" Collapsed="true">
     <Position X="5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAAAAQAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>IAAAAQAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAgA=</HashCode>
       <FileName>Tetra.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iniciador" Collapsed="true">
+    <Position X="7.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BBAAAAAAAAAAAgAAAAAAAAAAAAJAAAAAAAAAAACAAAE=</HashCode>
+      <FileName>Iniciador.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilidades" Collapsed="true">
+    <Position X="7" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAAAQAgAAABAAAAAA=</HashCode>
+      <FileName>Utilidades.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

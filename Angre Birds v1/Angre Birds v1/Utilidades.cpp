@@ -109,23 +109,19 @@ GLuint Utilidades::LoadShaders(const char* vertex_file_path, const char* fragmen
 	return ProgramID;
 }
 
-GLuint Utilidades::Loadtexture(const char * file_name)
+GLuint Utilidades::Loadtexture(const wchar_t * file_name)
 {
-	ILubyte *Lump;
-	ILuint Size;
-	FILE *file;
+	ILubyte* Lump;
+	ilInit();
+	ILuint image=1;
+	ilGenImage();
+	ilBindImage(image);
+	ilTexImage(1024, 1024, 1, 3, IL_RGB, IL_UNSIGNED_BYTE, NULL);
+	ilLoadImage(file_name);
 
-	fopen_s(&file, file_name, "rb");
-	fseek(file, 0, SEEK_END);
-	Size = ftell(file);
-
-	Lump = (ILubyte*)malloc(Size);
-	fseek(file, 0, SEEK_SET);
-	fread(Lump, 1, Size, file);
-	fclose(file);
-
-	ilLoadL(IL_JPG, Lump, Size);
-
+	
+	Lump = ilGetData();
+	ILint width = ilGetInteger(IL_IMAGE_WIDTH);
 	// Se Crea una textura OpenGL
 	GLuint textureID;
 	glGenTextures(1, &textureID);
@@ -137,8 +133,8 @@ GLuint Utilidades::Loadtexture(const char * file_name)
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1024, 1024, 0, GL_BGR, GL_UNSIGNED_BYTE, Lump);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);	
 
 
 	return textureID;

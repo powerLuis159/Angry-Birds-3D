@@ -71,7 +71,7 @@ int main()
 
 	std::vector<Base*> v;
 	v.push_back(&B);
-	v.push_back(&T);
+	//v.push_back(&T);
 
 	do {
 		glClear(GL_COLOR_BUFFER_BIT);

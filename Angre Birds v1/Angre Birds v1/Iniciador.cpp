@@ -51,7 +51,7 @@ GLuint Iniciador::iniciar_base()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
 	
 	
-	//buffer_text[0] = Utilidades::Loadtexture("Texturas/pasto.jpg");
+	buffer_text[0] = Utilidades::Loadtexture(L"Texturas/pasto.jpg");
 	//Clase a la cual asigna: BASE
 	buffer_vertex[0] = vertexbuffer;
 	buffer_trian[0] = 2;
