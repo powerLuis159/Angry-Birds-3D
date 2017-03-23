@@ -12,14 +12,15 @@ public:
 	// Funcion para cargar la textura del objeto base
 	GLuint cargar_textura();
 	// identificador de que vertices esta usando.
-	GLuint vertex_buffer;
+	virtual GLuint id();
 	// identificador de que coordenadas UV se estan usando
 	GLuint UV_buffer;
 	// identificador de que textura se esta usando
 	GLuint texture_buffer;
 	// matriz de modelado para el opengl
-	glm::mat4 model_matrix;
+	glm::mat4 model_matrix=glm::mat4(1.0f);
 	// Posicion del objeto en el espacio
 	glm::vec3 Posicion;
+	
 };
 

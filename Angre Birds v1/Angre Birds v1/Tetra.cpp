@@ -4,6 +4,7 @@
 
 Tetra::Tetra()
 {
+	model_matrix = glm::mat4(1.0f);
 }
 
 
@@ -16,4 +17,9 @@ Tetra::~Tetra()
 void Tetra::set_vertices()
 {
 	
+}
+
+GLuint Tetra::id()
+{
+	return GLuint(1);
 }
