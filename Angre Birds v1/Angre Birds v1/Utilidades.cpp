@@ -2,7 +2,7 @@
 #include "Utilidades.h"
 #include <vector>
 #include <fstream>
-#include <IL\il.h>
+
 Utilidades::Utilidades()
 {
 }
@@ -109,19 +109,47 @@ GLuint Utilidades::LoadShaders(const char* vertex_file_path, const char* fragmen
 	return ProgramID;
 }
 
-GLuint Utilidades::Loadtexture(const wchar_t * file_name)
+GLuint Utilidades::Loadtexture(const char * file_name)
 {
-	ILubyte* Lump;
-	ilInit();
-	ILuint image=1;
-	ilGenImage();
-	ilBindImage(image);
-	ilTexImage(1024, 1024, 1, 3, IL_RGB, IL_UNSIGNED_BYTE, NULL);
-	ilLoadImage(file_name);
+	// Lectura de información del encabezado del archivo
+	unsigned char header[54]; // Each BMP file begins by a 54-bytes header
+	unsigned int dataPos;     // Position in the file where the actual data begins
+	unsigned int width, height;
+	unsigned int imageSize;   // = width*height*3
+							  // Información RGB
+	unsigned char * data;
+	FILE *file;
+	fopen_s(&file, file_name, "rb");
+	if (!file) { printf("Image could not be opened\n"); return 0; }
 
-	
-	Lump = ilGetData();
-	ILint width = ilGetInteger(IL_IMAGE_WIDTH);
+	if (fread(header, 1, 54, file) != 54) { // If not 54 bytes read : problem
+		printf("Not a correct BMP file\n");
+		return false;
+	}
+
+	if (header[0] != 'B' || header[1] != 'M') {
+		printf("Not a correct BMP file\n");
+		return 0;
+	}
+
+	dataPos = *(int*)&(header[0x0A]);
+	imageSize = *(int*)&(header[0x22]);
+	width = *(int*)&(header[0x12]);
+	height = *(int*)&(header[0x16]);
+
+	// Algunos archivos BMP tienen un mal formato, así que adivinamos la información faltante
+	if (imageSize == 0)    imageSize = width*height * 3; // 3 : un byte por cada componente Rojo (Red), Verde (Green) y Azul(Blue)
+	if (dataPos == 0)      dataPos = 54; // El encabezado del BMP está hecho de ésta manera
+
+										 // Se crea un buffer
+	data = new unsigned char[imageSize];
+
+	// Leemos la información del archivo y la ponemos en el buffer
+	fread(data, 1, imageSize, file);
+
+	//Todo está en memoria ahora, así que podemos cerrar el archivo
+	fclose(file);
+
 	// Se Crea una textura OpenGL
 	GLuint textureID;
 	glGenTextures(1, &textureID);
@@ -132,10 +160,67 @@ GLuint Utilidades::Loadtexture(const wchar_t * file_name)
 	// Se le pasa la imagen a OpenGL
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1024, 1024, 0, GL_BGR, GL_UNSIGNED_BYTE, Lump);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1024, 1024, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);	
 
 
 	return textureID;
+}
+
+
+// Carga basica de archivos *.OBJ
+bool Utilidades::loadOBJ(const char* path, std::vector<glm::vec3>& out_vertices, std::vector<glm::vec2>& out_UVs, std::vector<glm::vec3>& out_normals, std::vector<unsigned int>& indices)
+{
+	FILE* file;
+	fopen_s(&file, path, "r");
+
+	char linea[128];
+
+	while (true)
+	{
+		if (fgets(linea, 128, file) == NULL)
+			break;
+
+		if (linea[0] == 'v')
+		{
+			if (linea[1] == 'n')
+			{
+				glm::vec3 vertex;
+				fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
+				out_normals.push_back(vertex);
+			}
+			else if (linea[1] == 't')
+			{
+				glm::vec2 vertex;
+				fscanf(file, "%f %f\n", &vertex.x, &vertex.y);
+				out_UVs.push_back(vertex);
+			}
+			else
+			{
+				glm::vec3 vertex;
+				scanf(linea, "%f %f %f", &vertex.x, &vertex.y, &vertex.z);
+				out_vertices.push_back(vertex);
+			}
+			
+		}
+		else if (linea[0]=='f')
+		{
+			unsigned int vertexindex[4], uvindex[4], normalindex[4];
+			int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n",
+				&vertexindex[0], &uvindex[0], &normalindex[0],
+				&vertexindex[1], &uvindex[1], &normalindex[1],
+				&vertexindex[2], &uvindex[2], &normalindex[2],
+				&vertexindex[3], &uvindex[3], &normalindex[3]);
+
+			indices.push_back(vertexindex[0]-1);
+			indices.push_back(vertexindex[1]-1);
+			indices.push_back(vertexindex[2]-1);
+			indices.push_back(vertexindex[0]-1);
+			indices.push_back(vertexindex[2]-1);
+			indices.push_back(vertexindex[3]-1);
+		}
+	}
+
+	return true;
 }

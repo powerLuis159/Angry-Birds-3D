@@ -22,5 +22,9 @@ public:
 	// Posicion del objeto en el espacio
 	glm::vec3 Posicion;
 	
+	// devuelve el valor de la textura a ser utlizada
+	virtual std::string obtener_textura();
+	// devuelve el archivo OBJ que se va a utilizar
+	virtual std::string obtener_objeto();
 };
 

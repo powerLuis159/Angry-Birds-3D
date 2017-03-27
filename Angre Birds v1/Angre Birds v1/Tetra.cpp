@@ -23,3 +23,17 @@ GLuint Tetra::id()
 {
 	return GLuint(1);
 }
+
+
+// Se devolvera madera por defecto
+std::string Tetra::obtener_textura()
+{
+	return "Texturas/madera.bmp";
+}
+
+
+// se usara el valor de un cubo
+std::string Tetra::obtener_objeto()
+{
+	return "Objetos/cubo.obj";
+}

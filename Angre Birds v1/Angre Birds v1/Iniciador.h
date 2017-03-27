@@ -1,4 +1,5 @@
 #pragma once
+#include "Base.h"
 class Iniciador
 {
 public:
@@ -8,11 +9,13 @@ public:
 	static GLuint iniciar_base();
 	// inicia un cubo
 	static GLuint iniciar_tetra();
-	// Array de buffer de vertices
-	static GLuint buffer_vertex[5];
-	// array de numero de triangulos
+	// Carga los valores al opengl a partir de un objeto	static GLuint buffer_indice[];
+	static GLuint iniciar(Base *);
+	// Buffer de vertices
+	static GLuint buffer_vertex[];
 	static int buffer_trian[];
-	// Array de texturas
 	static GLuint buffer_text[];
+	static GLuint buffer_indice[];
+	static GLuint buffer_UV[];
 };
 

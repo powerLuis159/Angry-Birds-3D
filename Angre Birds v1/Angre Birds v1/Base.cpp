@@ -25,3 +25,17 @@ GLuint Base::id()
 {
 	return GLuint(0);
 }
+
+
+// //devuelve el valor de la textura a ser utlizada
+std::string Base::obtener_textura()
+{
+	return "Texturas/pasto.bmp";
+}
+
+
+// devuelve el archivo OBJ que se va a utilizar
+std::string Base::obtener_objeto()
+{
+	return "";
+}

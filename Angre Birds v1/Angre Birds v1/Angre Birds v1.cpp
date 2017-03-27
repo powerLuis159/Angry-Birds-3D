@@ -63,15 +63,17 @@ int main()
 
 	glm::mat4 VP = Projection * View;
 	
-	Iniciador::iniciar_base();
-	Iniciador::iniciar_tetra();
+	
 
 	Base B;
 	Tetra T;
 
 	std::vector<Base*> v;
 	v.push_back(&B);
-	//v.push_back(&T);
+	v.push_back(&T);
+
+	Iniciador::iniciar_base();
+	Iniciador::iniciar(&T);
 
 	do {
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -89,14 +91,13 @@ int main()
 				0,                    // Paso
 				(void*)0            // desfase del buffer
 			);
-			// Dibujar el triángulo !
-
-			glDrawArrays(GL_TRIANGLES, 0, Iniciador::buffer_trian[var->id()] * 3); // Empezar desde el vértice 0S; 3 vértices en total -> 1 triángulo
-			glDisableVertexAttribArray(0);
+			
+			//glDrawArrays(GL_TRIANGLES, 0, Iniciador::buffer_trian[var->id()] * 3); // Empezar desde el vértice 0S; 3 vértices en total -> 1 triángulo
+			
 
 			// 2do atributo del buffer : colores
 			glEnableVertexAttribArray(1);
-			glBindBuffer(GL_ARRAY_BUFFER, Iniciador::buffer_text[0]);
+			glBindBuffer(GL_ARRAY_BUFFER, Iniciador::buffer_UV[var->id()]);
 			glVertexAttribPointer(
 				1,                                // Atributo. No hay razón especial para el 1, pero debe corresponder al número en el shader.
 				2,                                // tamaño
@@ -105,6 +106,14 @@ int main()
 				0,                                // corrimiento
 				(void*)0                          // corrimiento de buffer
 			);
+
+			// Dibujar el triángulo !
+			glBindTexture(GL_TEXTURE_2D, Iniciador::buffer_text[var->id()]);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Iniciador::buffer_indice[var->id()]);
+			glDrawElements(GL_TRIANGLES, Iniciador::buffer_trian[var->id()]*3, GL_UNSIGNED_INT, (void*)0);
+
+			glDisableVertexAttribArray(0);
+			glDisableVertexAttribArray(1);
 		}
 
 		
