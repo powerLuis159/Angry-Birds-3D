@@ -1,12 +1,4 @@
-#
-#
-#
+# Exported from 3D Builder
 
-newmtl Esferas_Phong[17]
-illum 2
-Ka 1.000000 1.000000 1.000000
+newmtl White
 Kd 1.000000 1.000000 1.000000
-Ks 0.000000 0.000000 0.000000
-Ns 1.000000
-map_Kd pasto.bmp
-

@@ -172,54 +172,46 @@ GLuint Utilidades::Loadtexture(const char * file_name)
 // Carga basica de archivos *.OBJ
 bool Utilidades::loadOBJ(const char* path, std::vector<glm::vec3>& out_vertices, std::vector<glm::vec2>& out_UVs, std::vector<glm::vec3>& out_normals, std::vector<unsigned int>& indices)
 {
-	FILE* file;
-	fopen_s(&file, path, "r");
 
-	char linea[128];
+	Assimp::Importer importer;
 
-	while (true)
+	const aiScene* scene = importer.ReadFile(path, 0);
+	if (!scene) {
+		fprintf(stderr, importer.GetErrorString());
+		getchar();
+		return false;
+	}
+
+	const aiMesh* mesh = scene->mMeshes[0];
+	out_vertices.reserve(mesh->mNumVertices);
+	for (size_t i = 0; i < mesh->mNumVertices; i++)
 	{
-		if (fgets(linea, 128, file) == NULL)
-			break;
+		aiVector3D pos = mesh->mVertices[i];
+		out_vertices.push_back(glm::vec3(pos.x, pos.y, pos.z));
+	}
 
-		if (linea[0] == 'v')
-		{
-			if (linea[1] == 'n')
-			{
-				glm::vec3 vertex;
-				fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
-				out_normals.push_back(vertex);
-			}
-			else if (linea[1] == 't')
-			{
-				glm::vec2 vertex;
-				fscanf(file, "%f %f\n", &vertex.x, &vertex.y);
-				out_UVs.push_back(vertex);
-			}
-			else
-			{
-				glm::vec3 vertex;
-				scanf(linea, "%f %f %f", &vertex.x, &vertex.y, &vertex.z);
-				out_vertices.push_back(vertex);
-			}
-			
-		}
-		else if (linea[0]=='f')
-		{
-			unsigned int vertexindex[4], uvindex[4], normalindex[4];
-			int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n",
-				&vertexindex[0], &uvindex[0], &normalindex[0],
-				&vertexindex[1], &uvindex[1], &normalindex[1],
-				&vertexindex[2], &uvindex[2], &normalindex[2],
-				&vertexindex[3], &uvindex[3], &normalindex[3]);
+	out_UVs.reserve(mesh->mNumVertices);
+	if(mesh->HasTextureCoords(0))
+	for (size_t i = 0; i < mesh->mNumVertices; i++)
+	{
+		aiVector3D UVW = mesh->mTextureCoords[0][i];
+		out_UVs.push_back(glm::vec2(UVW.x, UVW.y));
+	}
 
-			indices.push_back(vertexindex[0]-1);
-			indices.push_back(vertexindex[1]-1);
-			indices.push_back(vertexindex[2]-1);
-			indices.push_back(vertexindex[0]-1);
-			indices.push_back(vertexindex[2]-1);
-			indices.push_back(vertexindex[3]-1);
+	out_normals.reserve(mesh->mNumVertices);
+	if(mesh->HasNormals())
+		for (size_t i = 0; i < mesh->mNumVertices; i++)
+		{
+			aiVector3D n = mesh->mNormals[i];
+			out_normals.push_back(glm::vec3(n.x, n.y, n.z));
 		}
+
+	indices.reserve(mesh->mNumFaces);
+	for (size_t i = 0; i < mesh->mNumFaces; i++)
+	{
+		indices.push_back(mesh->mFaces[i].mIndices[0]);
+		indices.push_back(mesh->mFaces[i].mIndices[1]);
+		indices.push_back(mesh->mFaces[i].mIndices[2]);
 	}
 
 	return true;

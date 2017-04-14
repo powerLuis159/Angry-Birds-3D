@@ -35,5 +35,5 @@ std::string Tetra::obtener_textura()
 // se usara el valor de un cubo
 std::string Tetra::obtener_objeto()
 {
-	return "Objetos/cubo.obj";
+	return "Objetos/esfera.obj";
 }
