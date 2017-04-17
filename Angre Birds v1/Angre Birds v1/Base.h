@@ -26,5 +26,7 @@ public:
 	virtual std::string obtener_textura();
 	// devuelve el archivo OBJ que se va a utilizar
 	virtual std::string obtener_objeto();
+	virtual void mover();
+	virtual void rotar();
 };
 

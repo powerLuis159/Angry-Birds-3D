@@ -56,7 +56,7 @@ int main()
 
 	// Camera matrix
 	glm::mat4 View = glm::lookAt(
-		glm::vec3(0, -50, 25), // Camera is at (4,3,3), in World Space
+		glm::vec3(0, -50, 10), // Camera is at (4,3,3), in World Space
 		glm::vec3(0, 0, 0), // and looks at the origin
 		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
@@ -67,11 +67,12 @@ int main()
 
 	Base B;
 	Tetra T;
+	Tetra R(glm::vec3(2.0,2.0,2.0));
 
 	std::vector<Base*> v;
 	v.push_back(&B);
 	v.push_back(&T);
-
+	v.push_back(&R);
 	Iniciador::iniciar_base();
 	Iniciador::iniciar(&T);
 
@@ -81,6 +82,8 @@ int main()
 		for each (auto var in v)
 		{
 			glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(VP*var->model_matrix)[0][0]);
+			var->mover();
+			var->rotar();
 			glEnableVertexAttribArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER, Iniciador::buffer_vertex[var->id()]);
 			glVertexAttribPointer(

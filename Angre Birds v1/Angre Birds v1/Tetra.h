@@ -6,6 +6,7 @@ class Tetra :
 public:
 	
 	Tetra();
+	Tetra(glm::vec3);
 	virtual ~Tetra();
 	// //definir los valores de un tetraedro
 	void set_vertices();
@@ -15,5 +16,8 @@ public:
 	virtual std::string obtener_textura();
 	// se usara el valor de un cubo
 	std::string obtener_objeto();
+	// mueve
+	void mover();
+	void rotar();
 };
 

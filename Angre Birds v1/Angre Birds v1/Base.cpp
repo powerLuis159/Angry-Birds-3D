@@ -39,3 +39,11 @@ std::string Base::obtener_objeto()
 {
 	return "";
 }
+
+void Base::mover()
+{
+}
+
+void Base::rotar()
+{
+}
