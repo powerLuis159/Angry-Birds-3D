@@ -6,7 +6,7 @@ Esfera::Esfera()
 	: Radio(0)
 {
 	model_matrix = glm::mat4(1.0f);
-	model_matrix = glm::scale(model_matrix, glm::vec3(0.1, 0.1, 0.1));
+	model_matrix = glm::scale(model_matrix, glm::vec3(2.0, 2.0, 2.0));
 }
 
 
