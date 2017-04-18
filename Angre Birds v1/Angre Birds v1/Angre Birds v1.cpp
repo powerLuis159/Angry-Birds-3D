@@ -66,7 +66,7 @@ int main()
 	
 
 	Base B;
-	Tetra T;
+	Esfera T;
 	Tetra R(glm::vec3(2.0,2.0,2.0));
 
 	std::vector<Base*> v;
@@ -75,6 +75,7 @@ int main()
 	v.push_back(&R);
 	Iniciador::iniciar_base();
 	Iniciador::iniciar(&T);
+	Iniciador::iniciar(&R);
 
 	do {
 		glClear(GL_COLOR_BUFFER_BIT);
