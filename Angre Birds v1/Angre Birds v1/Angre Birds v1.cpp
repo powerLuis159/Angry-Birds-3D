@@ -90,7 +90,9 @@ int main()
 	GLuint programID = Utilidades::LoadShaders("vertexshader.txt","fragmentshader.txt");
 
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
-
+	GLuint MID = glGetUniformLocation(programID, "M");
+	GLuint VID = glGetUniformLocation(programID, "V");
+	GLuint lightID = glGetUniformLocation(programID, "LightPosition_worldspace");
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
@@ -105,6 +107,8 @@ int main()
 		glm::vec3(0, 0, 0), // and looks at the origin
 		glm::vec3(0, 1, 1)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
+
+	glm::vec3 light(0.0, 0.0, 0.0);
 
 	glm::mat4 VP = Projection * View;
 	
@@ -129,12 +133,13 @@ int main()
 		glUseProgram(programID);
 
 		objs.step();
-
+		glUniformMatrix4fv(VID, 1, GL_FALSE, &(View)[0][0]);
+		glUniform3f(lightID, light[0], light[1], light[2]);
 		for each (auto var in objs.vec)
 		{
 			//var->applyImpulse();
 			glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(VP*var->model_matrix)[0][0]);
-			
+			glUniformMatrix4fv(MID, 1, GL_FALSE, &(var->model_matrix)[0][0]);
 			glEnableVertexAttribArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER, Iniciador::buffer_vertex[var->id()]);
 			glVertexAttribPointer(
@@ -161,6 +166,18 @@ int main()
 				(void*)0                          // corrimiento de buffer
 			);
 
+			// 3do atributo del buffer : colores
+			glEnableVertexAttribArray(2);
+			glBindBuffer(GL_ARRAY_BUFFER, Iniciador::buffer_normal[var->id()]);
+			glVertexAttribPointer(
+				2,                                // Atributo. No hay razón especial para el 1, pero debe corresponder al número en el shader.
+				3,                                // tamaño
+				GL_FLOAT,                         // tipo
+				GL_FALSE,                         // normalizado?
+				0,                                // corrimiento
+				(void*)0                          // corrimiento de buffer
+			);
+
 			// Dibujar el triángulo !
 			glBindTexture(GL_TEXTURE_2D, Iniciador::buffer_text[var->id()]);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Iniciador::buffer_indice[var->id()]);
@@ -168,6 +185,7 @@ int main()
 
 			glDisableVertexAttribArray(0);
 			glDisableVertexAttribArray(1);
+			glDisableVertexAttribArray(2);
 		}
 
 		
