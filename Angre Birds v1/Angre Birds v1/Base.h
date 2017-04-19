@@ -1,9 +1,34 @@
 #pragma once
+
+
+
 class Base
 {
 public:
+	glm::vec3 upperCorner;
+	glm::vec3 lowerCorner;
+
+	float radio;
+
+	glm::vec3 center;
+	glm::vec3 rotation;
+	float halfWidth;
+
+	glm::vec3 linearVelocity;
+	glm::vec3 angularVelocity;
+	glm::vec3 force;
+	glm::vec3 acceleration;
+
+	float mass;
+	float elasticity;
+	float r_drag;
+
+	float timestamp;
+
+public:
 	
 	Base();
+	Base(glm::vec3);
 	virtual ~Base();
 	// //vida del objeto, si esta llega a 0. No debe ser dibujado mas.
 	int hit_points;
@@ -26,7 +51,20 @@ public:
 	virtual std::string obtener_textura();
 	// devuelve el archivo OBJ que se va a utilizar
 	virtual std::string obtener_objeto();
-	virtual void mover();
-	virtual void rotar();
+	virtual void mover(glm::vec3);
+	virtual void rotar(float angle, glm::vec3);
+	bool collide(Base *);
+
+	void addForce(glm::vec3);
+	void applyImpulse();
+
+	bool circleCollision( Base *);
+
+	void update();
+	void gravity();
+	void push(glm::vec3);
+
+	void reset() { linearVelocity = glm::vec3(0.0, 0.0, 0.0); }
+	float getAngle(glm::vec3);
 };
 

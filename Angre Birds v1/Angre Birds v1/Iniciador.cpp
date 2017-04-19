@@ -64,7 +64,7 @@ GLuint Iniciador::iniciar_base()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
 	
 	buffer_UV[0] = UV_buffer;
-	buffer_text[0] = Utilidades::Loadtexture("Texturas/pasto.bmp");
+	buffer_text[0] = Utilidades::Loadtexture("Texturas/futbol.bmp");
 	//Clase a la cual asigna: BASE
 	buffer_vertex[0] = vertexbuffer;
 	buffer_trian[0] = 2;

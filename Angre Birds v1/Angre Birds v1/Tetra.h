@@ -3,6 +3,7 @@
 class Tetra :
 	public Base
 {
+
 public:
 	
 	Tetra();
@@ -16,8 +17,5 @@ public:
 	virtual std::string obtener_textura();
 	// se usara el valor de un cubo
 	std::string obtener_objeto();
-	// mueve
-	void mover();
-	void rotar();
 };
 

@@ -152,6 +152,7 @@
     <ClInclude Include="Iniciador.h" />
     <ClInclude Include="Madera.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="Objects.h" />
     <ClInclude Include="Rojo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -168,6 +169,7 @@
     <ClCompile Include="Iniciador.cpp" />
     <ClCompile Include="Madera.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Objects.cpp" />
     <ClCompile Include="Rojo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

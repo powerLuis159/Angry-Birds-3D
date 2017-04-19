@@ -5,10 +5,50 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
+#include "Objects.h"
 #include "Esfera.h"
 #include "Iniciador.h"
-#include "Tetra.h"
+//#include "Tetra.h"
 #include "Utilidades.h"
+
+size_t angryBird = 1;
+double ang = 0.1;
+
+bool _window = true;
+
+Objects objs;
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+		_window = false;	// end the main loop
+	}
+	if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT )) {
+		glm::vec3 v(0.0, 0.5, 0.0);
+		objs.move(angryBird, v);
+	}
+	if (key == GLFW_KEY_DOWN&& (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		glm::vec3 v(0.0, -0.5, 0.0);
+		objs.move(angryBird, v);
+	}
+	if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		glm::vec3 v(-0.5, 0.0, 0.0);
+		objs.move(angryBird, v);
+	}
+	if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		glm::vec3 v(0.5, 0.0, 0.0);
+		objs.move(angryBird, v);
+	}
+	if (key == GLFW_KEY_HOME&& (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		glm::vec3 v(-1.0, 0.0, 0.0);
+		objs.vec[angryBird]->rotar(ang,v);
+	}
+	if (key == GLFW_KEY_END&& (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		glm::vec3 v(1.0, 0.0, 0.0);
+		objs.vec[angryBird]->rotar(ang,v);
+	}
+}
+
 int main()
 {
 	if (!glfwInit())
@@ -51,40 +91,50 @@ int main()
 
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 
+	// Enable depth test
+	glEnable(GL_DEPTH_TEST);
+	// Accept fragment if it closer to the camera than the former one
+	glDepthFunc(GL_LESS);
+
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 	glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 
 	// Camera matrix
 	glm::mat4 View = glm::lookAt(
-		glm::vec3(-50, 00, 10), // Camera is at (X,Y,Z), in World Space
+		glm::vec3(0, -40, 30), // Camera is at (X,Y,Z), in World Space4
 		glm::vec3(0, 0, 0), // and looks at the origin
-		glm::vec3(1, 0, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+		glm::vec3(0, 1, 1)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
 
 	glm::mat4 VP = Projection * View;
 	
-	
+	objs.add(BASE  , glm::vec3(0.0, 0.0, 0.0));		// Base vacia
+	objs.add(SPHERE, glm::vec3(0.0, -30.0, 15.0));
+	objs.add(SPHERE, glm::vec3(10.0, 20.0, 15.0));
+	objs.add(SPHERE, glm::vec3(-10.0 , 20.0, 25.0));
+	objs.add(SPHERE, glm::vec3(1.5, -5.0, 10.0));
+	objs.add(SPHERE, glm::vec3(0.0, 0.0, 10.0));
+	objs.add(SPHERE, glm::vec3(-10.0, 5.0, 10.0));
+	//objs.add(SPHERE, glm::vec3(0, 0.0, 1.0));
 
-	Base B;
-	Esfera T;
-	Tetra R(glm::vec3(2.0,2.0,2.0));
-
-	std::vector<Base*> v;
-	v.push_back(&B);
-	v.push_back(&T);
-	v.push_back(&R);
 	Iniciador::iniciar_base();
-	Iniciador::iniciar(&T);
-	Iniciador::iniciar(&R);
+	
+	for(int i=1; i<objs.vec.size(); i++)
+		Iniciador::iniciar(objs.vec[i]);
 
-	do {
-		glClear(GL_COLOR_BUFFER_BIT);
+	//objs.vec[angryBird]->addForce(glm::vec3(0.0, 100.0, 200.0));
+	objs.vec[angryBird]->push(glm::vec3(0.0, 0.3, 0.0));
+	while(_window) {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glUseProgram(programID);
-		for each (auto var in v)
+
+		objs.step();
+
+		for each (auto var in objs.vec)
 		{
+			//var->applyImpulse();
 			glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(VP*var->model_matrix)[0][0]);
-			var->mover();
-			var->rotar();
+			
 			glEnableVertexAttribArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER, Iniciador::buffer_vertex[var->id()]);
 			glVertexAttribPointer(
@@ -123,12 +173,14 @@ int main()
 		
 		// Swap buffers
 		glfwSwapBuffers(window);
+		glfwSetKeyCallback(window, key_callback);
 		glfwPollEvents();
-
+		
 	} // Revisar si escape para salir
-	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-		glfwWindowShouldClose(window) == 0);
+	//while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0);
+	
 
     return 0;
 }
+
 
