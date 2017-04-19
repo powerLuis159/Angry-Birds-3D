@@ -36,7 +36,7 @@ Esfera::~Esfera()
 
 std::string Esfera::obtener_objeto()
 {
-	return "Objetos/esferaER.obj";
+	return "Objetos/esfera.obj";
 }
 
 std::string Esfera::obtener_textura()

@@ -93,6 +93,7 @@ int main()
 	GLuint MID = glGetUniformLocation(programID, "M");
 	GLuint VID = glGetUniformLocation(programID, "V");
 	GLuint lightID = glGetUniformLocation(programID, "LightPosition_worldspace");
+	GLuint camID = glGetUniformLocation(programID, "camera_worlspace");
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
@@ -102,8 +103,10 @@ int main()
 	glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 
 	// Camera matrix
+	glm::vec3 cam_pos(0.0, -40, 30);
+
 	glm::mat4 View = glm::lookAt(
-		glm::vec3(0, -40, 30), // Camera is at (X,Y,Z), in World Space4
+		cam_pos, // Camera is at (X,Y,Z), in World Space4
 		glm::vec3(0, 0, 0), // and looks at the origin
 		glm::vec3(0, 1, 1)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
@@ -135,6 +138,7 @@ int main()
 		objs.step();
 		glUniformMatrix4fv(VID, 1, GL_FALSE, &(View)[0][0]);
 		glUniform3f(lightID, light[0], light[1], light[2]);
+		glUniform3f(camID, cam_pos[0], cam_pos[1], cam_pos[2]);
 		for each (auto var in objs.vec)
 		{
 			//var->applyImpulse();
