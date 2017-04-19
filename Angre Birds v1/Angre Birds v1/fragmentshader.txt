@@ -1,7 +1,10 @@
 #version 410 core
 // Valores interpolados de los vertex shaders
 in vec2 UV;
-
+in vec3 Position_worldspace;
+in vec3 EyeDirection_cameraspace;
+in vec3 LightDirection_cameraspace;
+in vec3 Normal_cameraspace;
 // Valores de salida
 out vec3 color;
 
@@ -9,7 +12,30 @@ out vec3 color;
 uniform sampler2D myTextureSampler;
 
 void main(){
+	//normal de un fragmento
+	vec3 n =normalize(Normal_cameraspace);
+	//direccion de la luz (del fragmento a la luz)
+	vec3 l=normalize(LightDirection_cameraspace);
 
+	//coseno del angulo entre la normal y la luz
+	//clamp sobre 0
+
+	float cosTheta=clamp(dot(n,l),0,1);
+	//float cosTheta=dot(n,l);
     // Color de Salida = color de la textura en las coordenadas UV específicadas
-    color = texture( myTextureSampler, UV ).rgb;
+    //color = (texture( myTextureSampler, UV ).rgb);
+	vec3 LightColor=vec3(1.0,1.0,1.0);
+	vec3 colorDifuso=(texture( myTextureSampler, UV ).rgb);
+
+	//color ambiental
+	vec3 colorAmbiental=vec3(0.1,0.1,0.1)*colorDifuso;
+	
+
+	//color Especular
+	vec3 E=normalize(EyeDirection_cameraspace);
+	vec3 R=reflect(-l,n);
+	float cosAlpha=clamp(dot(E,R),0,1);
+
+	//color final
+	color=colorAmbiental+colorDifuso*LightColor*cosTheta+colorDifuso*LightColor*pow(cosAlpha,5);
 }
