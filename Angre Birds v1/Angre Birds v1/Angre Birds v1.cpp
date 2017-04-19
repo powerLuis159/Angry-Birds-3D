@@ -50,25 +50,28 @@ int main()
 	GLuint programID = Utilidades::LoadShaders("vertexshader.txt","fragmentshader.txt");
 
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
-
+	GLuint MID = glGetUniformLocation(programID, "M");
+	GLuint VID = glGetUniformLocation(programID, "V");
+	GLuint lightID = glGetUniformLocation(programID, "LightPosition_worldspace");
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 	glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 
 	// Camera matrix
 	glm::mat4 View = glm::lookAt(
-		glm::vec3(-50, 00, 10), // Camera is at (X,Y,Z), in World Space
+		glm::vec3(0, -50, 10), // Camera is at (X,Y,Z), in World Space
 		glm::vec3(0, 0, 0), // and looks at the origin
-		glm::vec3(1, 0, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
 
 	glm::mat4 VP = Projection * View;
 	
-	
+	glm::vec3 light(20.0, 20.0, 20.0);
 
 	Base B;
 	Esfera T;
 	Tetra R(glm::vec3(2.0,2.0,2.0));
 
+	//vector de objetos base
 	std::vector<Base*> v;
 	v.push_back(&B);
 	v.push_back(&T);
@@ -77,12 +80,20 @@ int main()
 	Iniciador::iniciar(&T);
 	Iniciador::iniciar(&R);
 
+	// Enable depth test
+	glEnable(GL_DEPTH_TEST);
+	// Accept fragment if it closer to the camera than the former one
+	glDepthFunc(GL_LESS);
+
 	do {
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 		glUseProgram(programID);
+		glUniformMatrix4fv(VID, 1, GL_FALSE, &(View)[0][0]);
+		glUniform3f(lightID, light[0],light[1],light[2]);
 		for each (auto var in v)
 		{
 			glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(VP*var->model_matrix)[0][0]);
+			glUniformMatrix4fv(MID, 1, GL_FALSE, &(var->model_matrix)[0][0]);
 			var->mover();
 			var->rotar();
 			glEnableVertexAttribArray(0);
@@ -99,7 +110,7 @@ int main()
 			//glDrawArrays(GL_TRIANGLES, 0, Iniciador::buffer_trian[var->id()] * 3); // Empezar desde el vértice 0S; 3 vértices en total -> 1 triángulo
 			
 
-			// 2do atributo del buffer : colores
+			// 2do atributo del buffer : coordenaras de textura
 			glEnableVertexAttribArray(1);
 			glBindBuffer(GL_ARRAY_BUFFER, Iniciador::buffer_UV[var->id()]);
 			glVertexAttribPointer(
@@ -111,6 +122,18 @@ int main()
 				(void*)0                          // corrimiento de buffer
 			);
 
+			//3er atributo del buffer: normales!!
+			glEnableVertexAttribArray(2);
+			glBindBuffer(GL_ARRAY_BUFFER, Iniciador::buffer_normal[var->id()]);
+			glVertexAttribPointer(
+				2,                  // atributo 2. No hay razón particular para el 0, pero debe corresponder en el shader.
+				3,                  // tamaño
+				GL_FLOAT,           // tipo
+				GL_FALSE,           // normalizado?
+				0,                    // Paso
+				(void*)0            // desfase del buffer
+			);
+
 			// Dibujar el triángulo !
 			glBindTexture(GL_TEXTURE_2D, Iniciador::buffer_text[var->id()]);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Iniciador::buffer_indice[var->id()]);
@@ -118,6 +141,7 @@ int main()
 
 			glDisableVertexAttribArray(0);
 			glDisableVertexAttribArray(1);
+			glDisableVertexAttribArray(2);
 		}
 
 		

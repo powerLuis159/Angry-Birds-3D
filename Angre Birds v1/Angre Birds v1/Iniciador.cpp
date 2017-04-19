@@ -17,6 +17,7 @@ int Iniciador::buffer_trian[] = { 0,0,0,0,0 };
 GLuint Iniciador::buffer_text[] = { 0,0,0,0,0 };
 GLuint Iniciador::buffer_indice[] = { 0,0,0,0,0 };
 GLuint Iniciador::buffer_UV[] = { 0,0,0,0,0 };
+GLuint Iniciador::buffer_normal[] = { 0,0,0,0,0 };
 // iniciar un dibujo base
 GLuint Iniciador::iniciar_base()
 {
@@ -63,72 +64,27 @@ GLuint Iniciador::iniciar_base()
 	glBindBuffer(GL_ARRAY_BUFFER, UV_buffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
 	
+	//normales de la base
+	static const GLfloat g_normal_buffer_data[] = {
+		0.0,0.0,-1.0,
+		0.0,0.0,-1.0,
+		0.0,0.0,-1.0,
+		0.0,0.0,-1.0
+	};
+	GLuint normal_Buffer;
+	glGenBuffers(1, &normal_Buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normal_Buffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_normal_buffer_data), g_normal_buffer_data, GL_STATIC_DRAW);
+
 	buffer_UV[0] = UV_buffer;
 	buffer_text[0] = Utilidades::Loadtexture("Texturas/pasto.bmp");
 	//Clase a la cual asigna: BASE
 	buffer_vertex[0] = vertexbuffer;
 	buffer_trian[0] = 2;
+	buffer_normal[0] = normal_Buffer;
 	return vertexbuffer;
 }
 
-
-// inicia un cubo
-GLuint Iniciador::iniciar_tetra()
-{
-	static const GLfloat g_vertex_buffer_data[] = {
-		-1.0f,-1.0f,-1.0f, // triángulo 1 : comienza
-		-1.0f,-1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f, // triángulo 1 : termina
-		1.0f, 1.0f,-1.0f, // triángulo 2 : comienza
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f,-1.0f, // triángulo 2 : termina
-		1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f,-1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f,-1.0f,
-		-1.0f, 1.0f,-1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f
-	};
-
-	// Identificar el vertex buffer
-	GLuint vertexbuffer;
-	// Generar un buffer, poner el resultado en el vertexbuffer que acabamos de crear
-	glGenBuffers(1, &vertexbuffer);
-	// Los siguientes comandos le darán características especiales al 'vertexbuffer' 
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	// Darle nuestros vértices a  OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
-	//Clase a la cual asigna: BASE
-	
-	buffer_vertex[1] = vertexbuffer;
-	buffer_trian[1] = 12;
-	return vertexbuffer;
-}
 
 GLuint Iniciador::iniciar(Base *objeto_base)
 {
@@ -155,12 +111,18 @@ GLuint Iniciador::iniciar(Base *objeto_base)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_buffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
+	GLuint normal_buffer;
+	glGenBuffers(1, &normal_buffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, normal_buffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, normales.size() * sizeof(glm::vec3), &normales[0], GL_STATIC_DRAW);
+
+
 	buffer_text[k] = Utilidades::Loadtexture(objeto_base->obtener_textura().data());
 	buffer_indice[k] = indices_buffer;
 	buffer_UV[k] = UV_buffer;
 	buffer_vertex[k] = vertices_buffer;
+	buffer_normal[k] = normal_buffer;
 	buffer_trian[k] = indices.size() / 3;
-
 
 	return vertices_buffer;
 }
