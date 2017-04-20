@@ -59,6 +59,10 @@ void Base::mover(glm::vec3 v)
 	center += v;
 	model_matrix = glm::mat4(1.0);
 	model_matrix = glm::translate(model_matrix, center);
+
+	model_matrix = glm::rotate(model_matrix, angularVelocity[0], glm::vec3(1.0, 0.0, 0.0));
+	model_matrix = glm::rotate(model_matrix, angularVelocity[1], glm::vec3(0.0, 1.0, 0.0));
+	model_matrix = glm::rotate(model_matrix, angularVelocity[2], glm::vec3(0.0, 0.0, 1.0));
 }
 
 void Base::rotar(float angle, glm::vec3) {}
@@ -107,6 +111,8 @@ void Base::traslate(glm::vec3 v)
 	center = v;
 	model_matrix = glm::mat4(1.0);
 	model_matrix = glm::translate(model_matrix, center);
+
+
 }
 
 void Base::addForce(glm::vec3 f)
@@ -145,6 +151,8 @@ void Base::update()
 {
 	mover(linearVelocity);
 	linearVelocity *= r_drag;
+	angularVelocity[0] -= linearVelocity[1] * 0.35;
+	angularVelocity[1] -= linearVelocity[0] * 0.35;
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -154,5 +162,3 @@ void Base::update()
 		}
 	}
 }		
-
-

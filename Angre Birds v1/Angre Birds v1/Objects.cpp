@@ -37,36 +37,10 @@ void Objects::add(int id, glm::vec3 v)
 	}
 }
 
-void Objects::move(int id, glm::vec3 v)
-{
-	vec[id]->center += v;
-	vec[id]->upperCorner += v;
-	vec[id]->lowerCorner += v;
-
-	for(int i = 1; i<vec.size(); i++)
-		if (id != i) 
-		{
-			if(vec[id]->collide(vec[i])){
-				vec[id]->center -= v;
-				vec[id]->upperCorner -= v;
-				vec[id]->lowerCorner -= v;
-				printf("collision ! \n");
-				break;	// i = vec.size();
-			}
-		}
-			
-	vec[id]->model_matrix = glm::mat4(1.0);
-	vec[id]->model_matrix = glm::translate(vec[id]->model_matrix, vec[id]->center);
-
-	vec[id]->model_matrix = glm::rotate(vec[id]->model_matrix, vec[id]->rotation[0], glm::vec3(1.0, 0.0, 0.0));
-	vec[id]->model_matrix = glm::rotate(vec[id]->model_matrix, vec[id]->rotation[1], glm::vec3(0.0, 1.0, 0.0));
-	vec[id]->model_matrix = glm::rotate(vec[id]->model_matrix, vec[id]->rotation[2], glm::vec3(0.0, 0.0, 1.0));
-}
-
 void Objects::rotate(int id, float angle, glm::vec3 v)
 {
 	vec[id]->rotation += (v * angle);
-	vec[id]->model_matrix = glm::rotate<float, glm::packed_highp>(vec[id]->model_matrix, angle, v);
+	vec[id]->model_matrix = glm::rotate(vec[id]->model_matrix, angle, v);
 }
 
 void Objects::step() 

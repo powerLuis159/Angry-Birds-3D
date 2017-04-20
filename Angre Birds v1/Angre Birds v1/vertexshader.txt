@@ -26,7 +26,7 @@ void main(){
 
 	//vector que va desde el vertice a la camara
 	vec3 vertexPosition_cameraspace=(V*M*vec4(vertexPosition_modelspace,1)).xyz;
-	EyeDirection_cameraspace=camera_worlspace-vertexPosition_cameraspace;
+	EyeDirection_cameraspace=vec3(0,0,0)-vertexPosition_cameraspace;
 
 	//vector que vas desde el vertice a la luz
 	vec3 LightPosition_cameraspace=(V*vec4(LightPosition_worldspace,1)).xyz;

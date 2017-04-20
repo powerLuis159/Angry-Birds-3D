@@ -129,6 +129,7 @@ int main()
 	objs.add(BASE  , glm::vec3(0.0, 0.0, 0.0));		// Base vacia
 	objs.add(SPHERE, glm::vec3(0.0, -25.0, 10.0));
 	objs.add(SPHERE, glm::vec3(10.0, 20.0, 15.0));
+	objs.add(SPHERE, glm::vec3(20.0, 20.0, 15.0));
 	objs.add(SPHERE, glm::vec3(-10.0 , 20.0, 25.0));
 	objs.add(SPHERE, glm::vec3(1.5, -5.0, 10.0));
 	objs.add(SPHERE, glm::vec3(0.0, 0.0, 10.0));
@@ -139,6 +140,10 @@ int main()
 	objs.add(SPHERE, glm::vec3(10.0, 10.0, 10.0));
 	objs.add(SPHERE, glm::vec3(-10.0,-10.0, 10.0));
 	objs.add(SQUARE, glm::vec3(10.0, 0.0, 10.0));
+	objs.add(SPHERE, glm::vec3(13, 3.0, 10.0));
+	objs.add(SPHERE, glm::vec3(11.0, 12.0, 10.0));
+	objs.add(SPHERE, glm::vec3(-15.0, -8.0, 10.0));
+	objs.add(SQUARE, glm::vec3(7.0, 2.0, 10.0));
 	
 
 	Iniciador::iniciar_base();

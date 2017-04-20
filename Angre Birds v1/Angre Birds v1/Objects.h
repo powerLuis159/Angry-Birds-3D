@@ -16,12 +16,9 @@ public:
 	~Objects();
 
 	void add(int , glm::vec3);
-	void move(int , glm::vec3);
 	void rotate(int, float, glm::vec3);
 
 	void step();
-
-	////////
 	void bounce();
 };
 
