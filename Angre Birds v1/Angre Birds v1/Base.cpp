@@ -59,7 +59,6 @@ void Base::mover(glm::vec3 v)
 	center += v;
 	model_matrix = glm::mat4(1.0);
 	model_matrix = glm::translate(model_matrix, center);
-
 }
 
 void Base::rotar(float angle, glm::vec3) {}
@@ -103,12 +102,18 @@ float Base::getAngle(glm::vec3 v)
 	return a / (x*y);
 }
 
+void Base::traslate(glm::vec3 v)
+{
+	center = v;
+	model_matrix = glm::mat4(1.0);
+	model_matrix = glm::translate(model_matrix, center);
+}
+
 void Base::addForce(glm::vec3 f)
 {
 	force = f;
 	acceleration = f / mass;
 	linearVelocity += acceleration * timestamp;
-	printf("%f %f \n", acceleration[1], timestamp);
 }
 
 void Base::applyImpulse()

@@ -69,29 +69,6 @@ void Objects::rotate(int id, float angle, glm::vec3 v)
 	vec[id]->model_matrix = glm::rotate<float, glm::packed_highp>(vec[id]->model_matrix, angle, v);
 }
 
-/*void Objects::step()
-{
-	for (int i = 1; i < vec.size()-1; i++) 
-	{
-		if (vec[i]->center[2] <= 1.0) {
-			//vec[i]->addForce(-GRAVITY * vec[i]->mass);
-			vec[i]->linearVelocity[2] = -(vec[i]->linearVelocity[2]*0.99);
-
-		}
-		for (int j = i+1; j < vec.size(); j++) 
-			if (vec[i]->circleCollision(vec[j])) 
-			{
-				//printf("collision!!!! %d %d\n", i,j);
-				glm::vec3 normal = vec[j]->center - vec[i]->center;
-				//vec[i]->linearVelocity = glm::vec3(0.0) ;
-				float vel = 0.9;
-				vec[i]->linearVelocity = -vec[i]->linearVelocity*vel;
-				vec[j]->linearVelocity = vec[i]->linearVelocity;
-			}
-	}
-}*/
-
-
 void Objects::step() 
 {
 	//addGravity
@@ -103,7 +80,6 @@ void Objects::step()
 
 	for (int i = 1; i < vec.size(); i++) 
 	{
-		//printf("%f \n", linearVelocity[2]);
 		if (vec[i]->linearVelocity != glm::vec3(0.0, 0.0, 0.0))
 			vec[i]->update();
 	}
@@ -112,13 +88,13 @@ void Objects::step()
 
 int Z = 2;
 
-float getMax(glm::vec3 v) 
+float norm(glm::vec3 v) 
 {
-	float max = 0;
-	for (int i = 1; i < 3; i++)
-		if (max < abs(v[i]))
-			max = abs(v[i]);
-	return max;
+	float n = 0;
+	for (int i = 0; i < 3; i++)
+		n += v[i] * v[i];
+			
+	return sqrt(n);
 }
 
 void Objects::bounce()
@@ -126,20 +102,21 @@ void Objects::bounce()
 	for (int i = 1; i < vec.size(); i++)
 	{
 		float d = vec[i]->center[Z] - 1.0;
-		if (d < 0) {
+		float x = abs(vec[i]->center[0]);
+		float y = abs(vec[i]->center[1]);
+		if (d < 0 &&  x < 25 && y < 30) {
 			vec[i]->center[Z] = 1.0;
 			vec[i]->linearVelocity[Z] *= -(vec[i]->elasticity);		// rebota en base a la superposicion con el plano
-			printf("%f\n", vec[i]->elasticity);
 		}
 
 		for (int j = i + 1; j < vec.size(); j++) {
 			if (vec[i]->circleCollision(vec[j]))
 			{
 				glm::vec3 normal = vec[j]->center - vec[i]->center;
-				float n = getMax(normal);	normal /= n;
-				float l = getMax(vec[i]->linearVelocity) / 5.;
+				float n = norm(normal);
+				float l = norm(vec[i]->linearVelocity);
 
-				vec[j]->linearVelocity = normal * l;
+				vec[j]->linearVelocity = normal * (l/n) * vec[j]->elasticity;
 				vec[i]->linearVelocity -= vec[j]->linearVelocity;
 				
 				printf("collition!!!!\n");

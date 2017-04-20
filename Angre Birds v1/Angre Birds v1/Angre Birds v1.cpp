@@ -18,34 +18,45 @@ bool _window = true;
 
 Objects objs;
 
+glm::vec3 impulse(0.0, 0.3, 0.4);
+float iStep = 0.03;
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		_window = false;	// end the main loop
 	}
 	if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT )) {
-		glm::vec3 v(0.0, 0.5, 0.0);
-		objs.move(angryBird, v);
+		impulse[1] += iStep;
+		printf("%f %f %f \n", impulse[0], impulse[1], impulse[2]);
 	}
-	if (key == GLFW_KEY_DOWN&& (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-		glm::vec3 v(0.0, -0.5, 0.0);
-		objs.move(angryBird, v);
+	if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		impulse[1] -= iStep;
+		printf("%f %f %f \n", impulse[0], impulse[1], impulse[2]);
 	}
 	if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-		glm::vec3 v(-0.5, 0.0, 0.0);
-		objs.move(angryBird, v);
+		impulse[0] -= iStep;
+		printf("%f %f %f \n", impulse[0], impulse[1], impulse[2]);
 	}
 	if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-		glm::vec3 v(0.5, 0.0, 0.0);
-		objs.move(angryBird, v);
+		impulse[0] += iStep;
+		printf("%f %f %f \n", impulse[0], impulse[1], impulse[2]);
 	}
-	if (key == GLFW_KEY_HOME&& (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-		glm::vec3 v(-1.0, 0.0, 0.0);
-		objs.vec[angryBird]->rotar(ang,v);
+	if (key == GLFW_KEY_HOME && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		impulse[2] += iStep;
+		printf("%f %f %f \n", impulse[0], impulse[1], impulse[2]);
 	}
-	if (key == GLFW_KEY_END&& (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-		glm::vec3 v(1.0, 0.0, 0.0);
-		objs.vec[angryBird]->rotar(ang,v);
+	if (key == GLFW_KEY_END && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		impulse[2] -= iStep;
+		printf("%f %f %f \n", impulse[0], impulse[1], impulse[2]);
+	}
+	if (key == GLFW_KEY_SPACE && (action == GLFW_PRESS)) {
+		objs.vec[angryBird]->push( impulse );
+	}
+	if (key == GLFW_KEY_LEFT_CONTROL&& (action == GLFW_PRESS)) {
+		//impulse = glm::vec3(0.0, 0.3, 0.4);
+		objs.vec[angryBird]->reset();
+		objs.vec[angryBird]->traslate(glm::vec3(0.0, -25.0, 5.0));
 	}
 }
 
@@ -103,26 +114,32 @@ int main()
 	glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 
 	// Camera matrix
-	glm::vec3 cam_pos(0.0, -40, 30);
+	glm::vec3 cam_pos(-30.0, 0.0, 50);
 
 	glm::mat4 View = glm::lookAt(
 		cam_pos, // Camera is at (X,Y,Z), in World Space4
 		glm::vec3(0, 0, 0), // and looks at the origin
-		glm::vec3(0, 1, 1)  // Head is up (set to 0,-1,0 to look upside-down)
+		glm::vec3(1, 0, 1)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
 
-	glm::vec3 light(0.0, 0.0, 0.0);
+	glm::vec3 light(0.0, 0.0, 50.0);
 
 	glm::mat4 VP = Projection * View;
 	
 	objs.add(BASE  , glm::vec3(0.0, 0.0, 0.0));		// Base vacia
-	objs.add(SPHERE, glm::vec3(0.0, -30.0, 15.0));
+	objs.add(SPHERE, glm::vec3(0.0, -25.0, 10.0));
 	objs.add(SPHERE, glm::vec3(10.0, 20.0, 15.0));
 	objs.add(SPHERE, glm::vec3(-10.0 , 20.0, 25.0));
 	objs.add(SPHERE, glm::vec3(1.5, -5.0, 10.0));
 	objs.add(SPHERE, glm::vec3(0.0, 0.0, 10.0));
-	objs.add(SPHERE, glm::vec3(-10.0, 5.0, 10.0));
-	//objs.add(SPHERE, glm::vec3(0, 0.0, 1.0));
+	objs.add(SPHERE, glm::vec3(-10.0, 15.0, 10.0));
+	objs.add(SPHERE, glm::vec3(13.0, 22.0, 15.0));
+	objs.add(SPHERE, glm::vec3(-18.0, 12.0, 25.0));
+	objs.add(SPHERE, glm::vec3(3, 5.0, 10.0));
+	objs.add(SPHERE, glm::vec3(10.0, 10.0, 10.0));
+	objs.add(SPHERE, glm::vec3(-10.0,-10.0, 10.0));
+	objs.add(SQUARE, glm::vec3(10.0, 0.0, 10.0));
+	
 
 	Iniciador::iniciar_base();
 	
@@ -130,7 +147,7 @@ int main()
 		Iniciador::iniciar(objs.vec[i]);
 
 	//objs.vec[angryBird]->addForce(glm::vec3(0.0, 100.0, 200.0));
-	objs.vec[angryBird]->push(glm::vec3(0.0, 0.3, 0.0));
+	
 	while(_window) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glUseProgram(programID);

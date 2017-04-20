@@ -25,7 +25,7 @@ Esfera::Esfera(glm::vec3 v)
 
 	model_matrix = glm::mat4(1.0f);
 	model_matrix = glm::translate(model_matrix, v);
-	glm::vec3 s(3.0, 3.0, 3.0);
+	//glm::vec3 s(3.0, 3.0, 3.0);
 	//model_matrix = glm::scale(model_matrix, s);
 }
 

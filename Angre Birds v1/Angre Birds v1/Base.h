@@ -66,5 +66,6 @@ public:
 
 	void reset() { linearVelocity = glm::vec3(0.0, 0.0, 0.0); }
 	float getAngle(glm::vec3);
+	void traslate(glm::vec3);
 };
 
