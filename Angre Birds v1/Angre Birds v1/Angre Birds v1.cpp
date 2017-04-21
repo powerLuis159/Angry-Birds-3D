@@ -11,15 +11,20 @@
 //#include "Tetra.h"
 #include "Utilidades.h"
 
-size_t angryBird = 1;
+size_t angryBird = 3;
 double ang = 0.1;
 
 bool _window = true;
 
 Objects objs;
 
-glm::vec3 impulse(0.0, 0.3, 0.4);
+glm::vec3 impulse(0.0, 0.5, 0.2);
 float iStep = 0.03;
+
+glm::vec3 cam(-40.0, -40.0, 30.0);
+glm::vec3 camVal(-40.0, -40.0, 30.0);
+float angleX = 3.1415/2;
+float angleY = 0.0;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -28,37 +33,107 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT )) {
 		impulse[1] += iStep;
-		printf("%f %f %f \n", impulse[0], impulse[1], impulse[2]);
+		objs.vec[1]->traslate(glm::vec3(0.0, -25.0, 1.0));
+		objs.vec[2]->traslate(glm::vec3(0.0, -25.0, 1.0));
+		
+		float mult = 1;
+		objs.vec[1]->mover(impulse*(mult * 5));
+		objs.vec[2]->mover(impulse*(mult * 10));
 	}
 	if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 		impulse[1] -= iStep;
-		printf("%f %f %f \n", impulse[0], impulse[1], impulse[2]);
+		objs.vec[1]->traslate(glm::vec3(0.0, -25.0, 1.0));
+		objs.vec[2]->traslate(glm::vec3(0.0, -25.0, 1.0));
+
+		float mult = 1;
+		objs.vec[1]->mover(impulse*(mult * 5));
+		objs.vec[2]->mover(impulse*(mult * 10));
 	}
 	if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 		impulse[0] -= iStep;
-		printf("%f %f %f \n", impulse[0], impulse[1], impulse[2]);
+		objs.vec[1]->traslate(glm::vec3(0.0, -25.0, 1.0));
+		objs.vec[2]->traslate(glm::vec3(0.0, -25.0, 1.0));
+
+		float mult = 1;
+		objs.vec[1]->mover(impulse*(mult * 5));
+		objs.vec[2]->mover(impulse*(mult * 10));
 	}
 	if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 		impulse[0] += iStep;
-		printf("%f %f %f \n", impulse[0], impulse[1], impulse[2]);
+		objs.vec[1]->traslate(glm::vec3(0.0, -25.0, 1.0));
+		objs.vec[2]->traslate(glm::vec3(0.0, -25.0, 1.0));
+
+		float mult = 1;
+		objs.vec[1]->mover(impulse*(mult * 5));
+		objs.vec[2]->mover(impulse*(mult * 10));
 	}
 	if (key == GLFW_KEY_HOME && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 		impulse[2] += iStep;
-		printf("%f %f %f \n", impulse[0], impulse[1], impulse[2]);
+		objs.vec[1]->traslate(glm::vec3(0.0, -25.0, 1.0));
+		objs.vec[2]->traslate(glm::vec3(0.0, -25.0, 1.0));
+
+		float mult = 1;
+		objs.vec[1]->mover(impulse*(mult * 5));
+		objs.vec[2]->mover(impulse*(mult * 10));
 	}
 	if (key == GLFW_KEY_END && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 		impulse[2] -= iStep;
-		printf("%f %f %f \n", impulse[0], impulse[1], impulse[2]);
+		objs.vec[1]->traslate(glm::vec3(0.0, -25.0, 1.0));
+		objs.vec[2]->traslate(glm::vec3(0.0, -25.0, 1.0));
+
+		float mult = 1;
+		objs.vec[1]->mover(impulse*(mult * 5));
+		objs.vec[2]->mover(impulse*(mult * 10));
 	}
 	if (key == GLFW_KEY_SPACE && (action == GLFW_PRESS)) {
 		objs.vec[angryBird]->push( impulse );
+		objs.vec[1]->traslate(glm::vec3(0.0, -100.0, 1.0));
+		objs.vec[2]->traslate(glm::vec3(0.0, -100.0, 1.0));
 	}
-	if (key == GLFW_KEY_LEFT_CONTROL&& (action == GLFW_PRESS)) {
-		//impulse = glm::vec3(0.0, 0.3, 0.4);
+	if (key == GLFW_KEY_LEFT_CONTROL && (action == GLFW_PRESS)) {
 		objs.vec[angryBird]->reset();
-		objs.vec[angryBird]->traslate(glm::vec3(0.0, -25.0, 5.0));
+		objs.vec[angryBird]->traslate(glm::vec3(0.0, -25.0, 1.0));
+
+		objs.vec[1]->traslate(glm::vec3(0.0, -25.0, 1.0));
+		objs.vec[2]->traslate(glm::vec3(0.0, -25.0, 1.0));
+		
+		float mult = 1;
+		objs.vec[1]->mover(impulse*(mult * 5));
+		objs.vec[2]->mover(impulse*(mult * 10));
+	}
+	if (key == GLFW_KEY_TAB && (action == GLFW_PRESS)) {
+		glm::vec3 c = objs.vec[angryBird]->center;
+		float mult = 5.0;
+		objs.vec[angryBird]->mover(objs.vec[angryBird]->linearVelocity * mult);
+		objs.add(SPHERE,c);
+		objs.vec[objs.vec.size() - 1]->linearVelocity = objs.vec[angryBird]->linearVelocity;
+		objs.vec[objs.vec.size() - 1]->linearVelocity[0] += 0.5;
+		objs.vec[objs.vec.size() - 1]->mover(objs.vec[objs.vec.size() - 1]->linearVelocity * mult);
+		objs.add(SPHERE, c);
+		objs.vec[objs.vec.size() - 1]->linearVelocity = objs.vec[angryBird]->linearVelocity;
+		objs.vec[objs.vec.size() - 1]->linearVelocity[0] -= 0.5;
+		objs.vec[objs.vec.size() - 1]->mover(objs.vec[objs.vec.size() - 1]->linearVelocity * mult);
+	}
+
+	if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		angleX += 0.05;
+		cam[0] = camVal[0]*sin(angleX);
+	}
+	if (key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		angleX -= 0.05;
+		cam[0] = camVal[0] *sin(angleX);
+	}
+	if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		angleY += 0.05;
+		cam[1] = camVal[1] * cos(angleY);
+	}
+	if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		angleY -= 0.05;
+		cam[1] = camVal[1] * sin(angleY);
 	}
 }
+
+
 
 int main()
 {
@@ -113,11 +188,9 @@ int main()
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 	glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 
-	// Camera matrix
-	glm::vec3 cam_pos(-30.0, 0.0, 50);
-
+	
 	glm::mat4 View = glm::lookAt(
-		cam_pos, // Camera is at (X,Y,Z), in World Space4
+		cam, // Camera is at (X,Y,Z), in World Space4
 		glm::vec3(0, 0, 0), // and looks at the origin
 		glm::vec3(1, 0, 1)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
@@ -127,7 +200,9 @@ int main()
 	glm::mat4 VP = Projection * View;
 	
 	objs.add(BASE  , glm::vec3(0.0, 0.0, 0.0));		// Base vacia
-	objs.add(SPHERE, glm::vec3(0.0, -25.0, 10.0));
+	objs.add(SPHERE, glm::vec3(0.0, -25.0, 1.0));
+	objs.add(SPHERE, glm::vec3(0.0, -25.0, 1.0));
+	objs.add(SPHERE, glm::vec3(0.0, -25.0, 1.0));
 	objs.add(SPHERE, glm::vec3(10.0, 20.0, 15.0));
 	objs.add(SPHERE, glm::vec3(20.0, 20.0, 15.0));
 	objs.add(SPHERE, glm::vec3(-10.0 , 20.0, 25.0));
@@ -160,9 +235,19 @@ int main()
 		objs.step();
 		glUniformMatrix4fv(VID, 1, GL_FALSE, &(View)[0][0]);
 		glUniform3f(lightID, light[0], light[1], light[2]);
-		glUniform3f(camID, cam_pos[0], cam_pos[1], cam_pos[2]);
+		glUniform3f(camID, cam[0], cam[1], cam[2]);
+
+		View = glm::lookAt(
+			cam, // Camera is at (X,Y,Z), in World Space4
+			glm::vec3(0, 0, 0), // and looks at the origin
+			glm::vec3(1, 1, 1)  // Head is up (set to 0,-1,0 to look upside-down)
+		);
+		
+		VP = Projection * View;
+
 		for each (auto var in objs.vec)
 		{
+			
 			//var->applyImpulse();
 			glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(VP*var->model_matrix)[0][0]);
 			glUniformMatrix4fv(MID, 1, GL_FALSE, &(var->model_matrix)[0][0]);
@@ -218,7 +303,10 @@ int main()
 		// Swap buffers
 		glfwSwapBuffers(window);
 		glfwSetKeyCallback(window, key_callback);
+
 		glfwPollEvents();
+
+		
 		
 	} // Revisar si escape para salir
 	//while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0);
@@ -226,5 +314,3 @@ int main()
 
     return 0;
 }
-
-

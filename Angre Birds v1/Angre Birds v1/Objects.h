@@ -5,6 +5,7 @@
 
 enum objectsId { BASE, SPHERE, SQUARE };
 
+
 class Objects
 {
 public:

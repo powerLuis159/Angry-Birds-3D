@@ -47,12 +47,12 @@ void Objects::step()
 {
 	//addGravity
 	
-	for (int i = 1; i < vec.size() ; i++)
+	for (int i = 3; i < vec.size() ; i++)
 	{	
 		vec[i]->gravity();
 	}
 
-	for (int i = 1; i < vec.size(); i++) 
+	for (int i = 3; i < vec.size(); i++) 
 	{
 		if (vec[i]->linearVelocity != glm::vec3(0.0, 0.0, 0.0))
 			vec[i]->update();
@@ -73,7 +73,7 @@ float norm(glm::vec3 v)
 
 void Objects::bounce()
 {
-	for (int i = 1; i < vec.size(); i++)
+	for (int i = 3; i < vec.size(); i++)
 	{
 		float d = vec[i]->center[Z] - 1.0;
 		float x = abs(vec[i]->center[0]);
