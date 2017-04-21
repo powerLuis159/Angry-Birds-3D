@@ -5,6 +5,8 @@ class Rojo :
 {
 public:
 	Rojo();
+	Rojo(glm::vec3);
+	virtual GLuint id();
 	~Rojo();
 };
 

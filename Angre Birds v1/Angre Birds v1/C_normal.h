@@ -5,6 +5,8 @@ class C_normal :
 {
 public:
 	C_normal();
+	C_normal(glm::vec3 v);
+	virtual GLuint id();
 	~C_normal();
 };
 

@@ -144,14 +144,20 @@
     <Text Include="vertexshader.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Amarillo.h" />
     <ClInclude Include="Ave.h" />
+    <ClInclude Include="Azul.h" />
     <ClInclude Include="Base.h" />
     <ClInclude Include="Cerdo.h" />
+    <ClInclude Include="C_Especial.h" />
     <ClInclude Include="C_normal.h" />
     <ClInclude Include="Esfera.h" />
+    <ClInclude Include="Hielo.h" />
     <ClInclude Include="Iniciador.h" />
     <ClInclude Include="Madera.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="Metal.h" />
+    <ClInclude Include="Niveles.h" />
     <ClInclude Include="Objects.h" />
     <ClInclude Include="Rojo.h" />
     <ClInclude Include="stdafx.h" />
@@ -160,15 +166,21 @@
     <ClInclude Include="Utilidades.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Amarillo.cpp" />
     <ClCompile Include="Angre Birds v1.cpp" />
     <ClCompile Include="Ave.cpp" />
+    <ClCompile Include="Azul.cpp" />
     <ClCompile Include="Base.cpp" />
     <ClCompile Include="Cerdo.cpp" />
+    <ClCompile Include="C_Especial.cpp" />
     <ClCompile Include="C_normal.cpp" />
     <ClCompile Include="Esfera.cpp" />
+    <ClCompile Include="Hielo.cpp" />
     <ClCompile Include="Iniciador.cpp" />
     <ClCompile Include="Madera.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Metal.cpp" />
+    <ClCompile Include="Niveles.cpp" />
     <ClCompile Include="Objects.cpp" />
     <ClCompile Include="Rojo.cpp" />
     <ClCompile Include="stdafx.cpp">

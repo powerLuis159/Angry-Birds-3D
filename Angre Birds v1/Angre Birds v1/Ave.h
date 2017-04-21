@@ -5,6 +5,9 @@ class Ave :
 {
 public:
 	Ave();
+	Ave(glm::vec3);
 	virtual ~Ave();
+	virtual std::string obtener_textura();
+	virtual GLuint id();
 };
 

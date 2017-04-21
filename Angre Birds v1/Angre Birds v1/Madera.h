@@ -5,6 +5,9 @@ class Madera :
 {
 public:
 	Madera();
+	Madera(glm::vec3 v);
+	virtual std::string obtener_textura();
+	virtual GLuint id();
 	~Madera();
 };
 

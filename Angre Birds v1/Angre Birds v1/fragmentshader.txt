@@ -28,7 +28,7 @@ void main(){
 	vec3 colorDifuso=(texture( myTextureSampler, UV ).rgb);
 
 	//color ambiental
-	vec3 colorAmbiental=vec3(0.1,0.1,0.1)*colorDifuso;
+	vec3 colorAmbiental=vec3(0.2,0.2,0.2)*colorDifuso;
 	
 
 	//color Especular

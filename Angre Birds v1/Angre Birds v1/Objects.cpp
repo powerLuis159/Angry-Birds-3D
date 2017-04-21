@@ -33,7 +33,7 @@ void Objects::add(int id, glm::vec3 v)
 	}
 	else
 	if (id == SPHERE) {
-		vec.push_back(new Esfera(v));
+		vec.push_back(new Rojo(v));
 	}
 }
 

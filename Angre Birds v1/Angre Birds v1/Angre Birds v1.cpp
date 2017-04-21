@@ -6,11 +6,9 @@
 #include <iostream>
 #include <vector>
 #include "Objects.h"
-#include "Esfera.h"
 #include "Iniciador.h"
-//#include "Tetra.h"
 #include "Utilidades.h"
-
+#include "Niveles.h"
 size_t angryBird = 3;
 double ang = 0.1;
 
@@ -21,7 +19,7 @@ Objects objs;
 glm::vec3 impulse(0.0, 0.5, 0.2);
 float iStep = 0.03;
 
-glm::vec3 cam(-40.0, -40.0, 30.0);
+glm::vec3 cam(0.0, 0.0, 50.0);
 glm::vec3 camVal(-40.0, -40.0, 30.0);
 float angleX = 3.1415/2;
 float angleY = 0.0;
@@ -192,40 +190,22 @@ int main()
 	glm::mat4 View = glm::lookAt(
 		cam, // Camera is at (X,Y,Z), in World Space4
 		glm::vec3(0, 0, 0), // and looks at the origin
-		glm::vec3(1, 0, 1)  // Head is up (set to 0,-1,0 to look upside-down)
+		glm::vec3(0, 0, 1)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
 
 	glm::vec3 light(0.0, 0.0, 50.0);
 
 	glm::mat4 VP = Projection * View;
 	
-	objs.add(BASE  , glm::vec3(0.0, 0.0, 0.0));		// Base vacia
-	objs.add(SPHERE, glm::vec3(0.0, -25.0, 1.0));
-	objs.add(SPHERE, glm::vec3(0.0, -25.0, 1.0));
-	objs.add(SPHERE, glm::vec3(0.0, -25.0, 1.0));
-	objs.add(SPHERE, glm::vec3(10.0, 20.0, 15.0));
-	objs.add(SPHERE, glm::vec3(20.0, 20.0, 15.0));
-	objs.add(SPHERE, glm::vec3(-10.0 , 20.0, 25.0));
-	objs.add(SPHERE, glm::vec3(1.5, -5.0, 10.0));
-	objs.add(SPHERE, glm::vec3(0.0, 0.0, 10.0));
-	objs.add(SPHERE, glm::vec3(-10.0, 15.0, 10.0));
-	objs.add(SPHERE, glm::vec3(13.0, 22.0, 15.0));
-	objs.add(SPHERE, glm::vec3(-18.0, 12.0, 25.0));
-	objs.add(SPHERE, glm::vec3(3, 5.0, 10.0));
-	objs.add(SPHERE, glm::vec3(10.0, 10.0, 10.0));
-	objs.add(SPHERE, glm::vec3(-10.0,-10.0, 10.0));
-	objs.add(SQUARE, glm::vec3(10.0, 0.0, 10.0));
-	objs.add(SPHERE, glm::vec3(13, 3.0, 10.0));
-	objs.add(SPHERE, glm::vec3(11.0, 12.0, 10.0));
-	objs.add(SPHERE, glm::vec3(-15.0, -8.0, 10.0));
-	objs.add(SQUARE, glm::vec3(7.0, 2.0, 10.0));
 	
+	Niveles mijuego;
+	objs.vec = mijuego.nivel(0);
 
 	Iniciador::iniciar_base();
 	
 	for(int i=1; i<objs.vec.size(); i++)
 		Iniciador::iniciar(objs.vec[i]);
-
+	Iniciador::buffer_text[0] = mijuego.get_escenario(0);
 	//objs.vec[angryBird]->addForce(glm::vec3(0.0, 100.0, 200.0));
 	
 	while(_window) {

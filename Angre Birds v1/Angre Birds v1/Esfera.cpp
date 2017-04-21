@@ -41,7 +41,7 @@ std::string Esfera::obtener_objeto()
 
 std::string Esfera::obtener_textura()
 {
-	return "Texturas/madera - copia.bmp";
+	return "Texturas/CERDO.bmp";
 }
 
 GLuint Esfera::id()

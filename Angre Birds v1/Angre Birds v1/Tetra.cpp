@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "Tetra.h"
 
-float MASS = 10;
-float TIMESTAMP = 1.0f / 60.0f;
+
 
 Tetra::Tetra()
 {
@@ -11,19 +10,18 @@ Tetra::Tetra()
 
 Tetra::Tetra(glm::vec3 v)
 {
+	Base::radio = 1;
 	Base::halfWidth = 1;
 	Base::center = v;
-	Base::timestamp = TIMESTAMP;
+	Base::timestamp = 1.0/60.0f;
 	Base::linearVelocity = glm::vec3(0.0);
 	Base::linearVelocity = glm::vec3(0.0);
-	Base::mass = MASS;
+	Base::mass = 10.0;
+	Base::elasticity = 0.75;
+	Base::r_drag = 0.996;
 
-	model_matrix = glm::mat4(1.0);
+	model_matrix = glm::mat4(1.0f);
 	model_matrix = glm::translate(model_matrix, v);
-
-	glm::vec3 uno(1.0, 1.0, 1.0);
-	upperCorner = v + uno;
-	lowerCorner = v - uno;
 }
 
 Tetra::~Tetra()
@@ -43,7 +41,7 @@ GLuint Tetra::id()
 // Se devolvera madera por defecto
 std::string Tetra::obtener_textura()
 {
-	return "Texturas/madera.bmp";
+	return "Texturas/hielo.bmp";
 }
 
 

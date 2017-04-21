@@ -12,12 +12,12 @@ Iniciador::~Iniciador()
 {
 }
 
-GLuint Iniciador::buffer_vertex[5] = {0,0,0,0,0};
-int Iniciador::buffer_trian[] = { 0,0,0,0,0 };
-GLuint Iniciador::buffer_text[] = { 0,0,0,0,0 };
-GLuint Iniciador::buffer_indice[] = { 0,0,0,0,0 };
-GLuint Iniciador::buffer_UV[] = { 0,0,0,0,0 };
-GLuint Iniciador::buffer_normal[] = { 0,0,0,0,0 };
+GLuint Iniciador::buffer_vertex[15];
+int Iniciador::buffer_trian[15] ;
+GLuint Iniciador::buffer_text[15] ;
+GLuint Iniciador::buffer_indice[15] ;
+GLuint Iniciador::buffer_UV[15] ;
+GLuint Iniciador::buffer_normal[15];
 // iniciar un dibujo base
 GLuint Iniciador::iniciar_base()
 {

@@ -2,7 +2,8 @@
 
 #include "Tetra.h"
 #include "Esfera.h"
-
+#include "Ave.h"
+#include "Rojo.h"
 enum objectsId { BASE, SPHERE, SQUARE };
 
 
